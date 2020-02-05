@@ -6,8 +6,18 @@ Project page: https://github.com/maresb/docker-build-s3fs
 
 ## Build s3fs from Docker
 
-For some reason, the released version of [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) doesn't work for me.
-Thus I built this Dockerfile to compile it from a specified GitHub hash.
+For some reason, the neither the default `apt-get install s3fs` version nor the released version of
+[s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) work for me.
+(I am running Ubuntu 18.04 on AWS.)
+Thus I built this Dockerfile to compile s3fs from a specified GitHub hash.
+
+I need to deploy this to several instances, so I much prefer the speed and
+convenience of installing from a `.deb` file as opposed to compiling from source.
+For security reasons, I avoid downloading software compiled by random people.
+If you trust me, you can download from the above link.  Otherwise, simply follow the
+instructions below to build it yourself.
+
+Finally,  `dpkg -i s3fs_….deb` to install.
 
 ### Compile under Docker.
 ```

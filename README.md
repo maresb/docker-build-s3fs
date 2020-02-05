@@ -2,6 +2,8 @@
 
 Project page: https://github.com/maresb/docker-build-s3fs
 
+[.deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-e0712f4/s3fs_1.85%2Bgit-e0712f4_amd64.deb) rendered from [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/e0712f4)
+
 ## Build s3fs from Docker
 
 For some reason, the released version of [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) doesn't work for me.

@@ -1,5 +1,7 @@
 # Reference: https://github.com/s3fs-fuse/s3fs-fuse/wiki/Installation-Notes
 
+# SET COMMIT HASH BELOW!!!
+
 FROM ubuntu:18.04
 
 LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
@@ -7,8 +9,6 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
       url="https://github.com/maresb/docker-build-s3fs" \
       vcs-url="https://github.com/maresb/docker-build-s3fs"
 
-ARG COMMIT_HASH=e0712f4
-ARG VERSION_STRING=1.85+git-e0712f4
 
 # Install general build tools
 
@@ -31,6 +31,16 @@ RUN \
     && apt-get update \
     && apt-get build-dep -y s3fs \
     && apt-get source s3fs
+
+
+# SET COMMIT HASH HERE!!!
+#
+###################################
+###################################
+ARG COMMIT_HASH=e0712f4
+ARG VERSION_STRING=1.85+git-e0712f4
+###################################
+###################################
 
 # Download the latest GitHub release, overwriting the original source archive. 
 # Then re-extract the original source tree, and update the version.

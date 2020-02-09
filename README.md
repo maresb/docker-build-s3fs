@@ -1,5 +1,7 @@
 # docker-build-s3fs
 
+##### Updates the Ubuntu 18.04 bionic .deb (currently s3fs_1.82-1_amd64.deb) with a specified commit from the s3fs-fuse GitHub repository.
+
 Project page: https://github.com/maresb/docker-build-s3fs
 
 [Resulting .deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-e0712f4/s3fs_1.85+git-e0712f4_amd64.deb?raw=true) rendered from [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/e0712f4)
@@ -22,6 +24,12 @@ Finally,  `dpkg -i s3fs_….deb` to install.
 ### Compile under Docker.
 ```
 docker build -t build-s3fs --build-arg COMMIT_HASH=e0712f4 --build-arg VERSION_STRING=1.85+git-e0712f4 .
+```
+
+Or, for a release version,
+
+```
+docker build -t build-s3fs --build-arg COMMIT_HASH=v1.86 --build-arg VERSION_STRING=1.86+git .
 ```
 
 ### Copy the package from the image via a temporary container.

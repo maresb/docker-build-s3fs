@@ -4,7 +4,7 @@
 
 Project page: https://github.com/maresb/docker-build-s3fs
 
-[Resulting .deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-e0712f4/s3fs_1.85+git-e0712f4_amd64.deb?raw=true) rendered from [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/e0712f4)
+[Resulting .deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-v1.86/s3fs_1.86+git_amd64.deb?raw=true) rendered from [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86)
 
 ## Build s3fs from Docker
 

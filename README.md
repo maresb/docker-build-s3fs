@@ -23,13 +23,13 @@ Finally,  `dpkg -i s3fs_….deb` to install.
 
 ### Compile under Docker.
 ```
-docker build -t build-s3fs --build-arg COMMIT_HASH=e0712f4 --build-arg VERSION_STRING=1.85+git-e0712f4 .
+docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg PACKAGE_VERSION_STRING=1.85+git-e0712f4 .
 ```
 
 Or, for a release version,
 
 ```
-docker build -t build-s3fs --build-arg COMMIT_HASH=v1.86 --build-arg VERSION_STRING=1.86+git .
+docker build -t build-s3fs --build-arg COMMIT_ID=v1.86 --build-arg PACKAGE_VERSION_STRING=1.86+git .
 ```
 
 ### Copy the package from the image via a temporary container.

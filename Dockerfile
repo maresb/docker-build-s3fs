@@ -1,6 +1,6 @@
 # Reference: https://github.com/s3fs-fuse/s3fs-fuse/wiki/Installation-Notes
 
-# SET COMMIT HASH BELOW!!!
+# SET COMMIT ID BELOW!!!
 
 FROM ubuntu:18.04
 
@@ -39,11 +39,11 @@ RUN \
 ###################################
 
 # Non-release example:
-#ARG COMMIT_HASH=e0712f4
-#ARG VERSION_STRING=1.85+git-e0712f4
+#ARG COMMIT_ID=e0712f4
+#ARG PACKAGE_VERSION_STRING=1.85+git-e0712f4
 
-ARG COMMIT_HASH=v1.86
-ARG VERSION_STRING=1.86+git
+ARG COMMIT_ID=v1.86
+ARG PACKAGE_VERSION_STRING=1.86+git
 
 ###################################
 ###################################
@@ -57,7 +57,7 @@ RUN \
     # Directory name, i.e. ./s3fs-fuse-1.82
     PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
     curl -L \
-             https://github.com/s3fs-fuse/s3fs-fuse/tarball/$COMMIT_HASH \
+             https://github.com/s3fs-fuse/s3fs-fuse/tarball/$COMMIT_ID \
          -o \
              $PACKAGE_BASE.orig.tar.gz \
     && rm -rf "$PACKAGE_DIR" \
@@ -65,7 +65,7 @@ RUN \
     && cd "$PACKAGE_DIR" \
     && export DEBFULLNAME="Ben Mares" \
     && export DEBEMAIL="services-docker-build-s3fs@tensorial.com" \
-    && dch -v "$VERSION_STRING" "Made by docker-build-s3fs from GitHub release"
+    && dch -v "$PACKAGE_VERSION_STRING" "Made by docker-build-s3fs from GitHub release"
 
 
 # Build

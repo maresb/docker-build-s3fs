@@ -59,4 +59,4 @@ docker run --rm -it build-s3fs /bin/bash
 
 <a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should not trust me (unless you know me personally).  I originally wanted to provide a certifiable `.deb` built automatically on Docker Hub. The `Dockerfile` prints the checksum<sup><a name="checksumsrc">[2](#checksumdest)</a></sup> of the `.deb`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so unfortunately only I can see the checksum at the moment.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
 
-<a name="checksumdest">[[2]](#checksumsrc)</a> There is not even a unique checksum of the `.deb` for a given commit, since the Debian changelog includes a timestamp (including seconds) of the build.
+<a name="checksumdest">[[2]](#checksumsrc)</a> There is not even a unique checksum of the resulting `.deb` for a given commit, since the archived files have a last-modified time according to the build time.

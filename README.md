@@ -4,7 +4,7 @@
 
 Links:
 
-- [Download the resulting .deb file](https://github.com/maresb/docker-build-s3fs/raw/deb-v1.86/s3fs_1.86+git_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86))
+- [Download the resulting .deb file](https://raw.githubusercontent.com/maresb/docker-build-s3fs/deb-v1.86/s3fs_1.86+git_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86))
 
 - GitHub: https://github.com/maresb/docker-build-s3fs
 

@@ -1,25 +1,29 @@
 # docker-build-s3fs
 
-##### Updates the Ubuntu 18.04 bionic .deb (currently s3fs_1.82-1_amd64.deb) with a specified commit from the s3fs-fuse GitHub repository.
+#### Builds a .deb for Ubuntu 18.04 based on a specified commit from the s3fs-fuse GitHub repository.
 
-Project page: https://github.com/maresb/docker-build-s3fs
+Links:
 
-[Resulting .deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-v1.86/s3fs_1.86+git_amd64.deb?raw=true) rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86)
+- [Download the resulting .deb file](https://github.com/maresb/docker-build-s3fs/blob/deb-v1.86/s3fs_1.86+git_amd64.deb?raw=true) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86))
+
+- GitHub: https://github.com/maresb/docker-build-s3fs
+
+- Docker Hub: https://hub.docker.com/repository/docker/maresb/docker-build-s3fs
+
+- s3fs-fuse: https://github.com/s3fs-fuse/s3fs-fuse
+
+This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with source code updated from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).
 
 ## Build s3fs from Docker
 
-For some reason, the neither the default `apt-get install s3fs` version nor the released version of
-[s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) work for me.
-(I am running Ubuntu 18.04 on AWS.)
-Thus I built this Dockerfile to compile s3fs from a specified GitHub hash.
+Ubuntu 18.04's outdated version of [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) (resulting from `apt-get install s3fs`) does not seem to work for me on AWS. Thus I built this Dockerfile which compiles s3fs from a specified GitHub commit.
 
 I need to deploy this to several instances, so I much prefer the speed and
 convenience of installing from a `.deb` file as opposed to compiling from source.
 For security reasons, I avoid downloading software compiled by random people.
-If you trust me, you can download from the above link.  Otherwise, simply follow the
-instructions below to build it yourself.
+If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can download the `.deb` from the above link.  Otherwise, follow the instructions below to build it yourself.
 
-Finally,  `dpkg -i s3fs_….deb` to install.
+Once you have the `.deb` file, run `sudo dpkg -i s3fs_….deb` to install.
 
 ### Compile under Docker.
 ```
@@ -50,3 +54,9 @@ docker purge
 ```
 docker run --rm -it build-s3fs /bin/bash
 ```
+
+## Notes
+
+<a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should not trust me (unless you know me personally).  I originally wanted to provide a certifiable `.deb` built automatically on Docker Hub. The `Dockerfile` prints the checksum<sup><a name="checksumsrc">[2](#checksumdest)</a></sup> of the `.deb`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so unfortunately only I can see the checksum at the moment.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
+
+<a name="checksumdest">[[2]](#checksumsrc)</a> There is not even a unique checksum of the `.deb` for a given commit, since the Debian changelog includes a timestamp (including seconds) of the build.

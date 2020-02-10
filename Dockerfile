@@ -53,15 +53,17 @@ ARG PACKAGE_VERSION_STRING=1.86+git
 
 RUN \
     # Base name of the package, i.e. s3fs-fuse_1.82-1
-    PACKAGE_BASE=$(basename $(ls *.dsc) .dsc); \
+    PACKAGE_GZ=$(ls *.orig.tar.gz); \
+    # Base name of the package, i.e. s3fs-fuse_1.82-1
+    PACKAGE_DSC=$(ls *.dsc); \
     # Directory name, i.e. ./s3fs-fuse-1.82
     PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
     curl -L \
              https://github.com/s3fs-fuse/s3fs-fuse/tarball/$COMMIT_ID \
          -o \
-             $PACKAGE_BASE.orig.tar.gz \
+             $PACKAGE_GZ \
     && rm -rf "$PACKAGE_DIR" \
-    && dpkg-source --no-check -x $PACKAGE_BASE.dsc \
+    && dpkg-source --no-check -x $PACKAGE_DSC \
     && cd "$PACKAGE_DIR" \
     && export DEBFULLNAME="Ben Mares" \
     && export DEBEMAIL="services-docker-build-s3fs@tensorial.com" \

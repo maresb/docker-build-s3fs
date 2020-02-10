@@ -99,6 +99,25 @@ RUN : \
 # Report info
 
 RUN : \
+  && echo \
+  && echo \
+  && echo "--------------------------------------" \
+  && echo "|       .deb CHECKSUM AND SIZE       |" \
+  && echo "--------------------------------------" \
+  && echo \
   && sha256sum *.deb \
   && echo $(stat -c%s *.deb) bytes \
+  && echo \
+  && echo "--------------------------------------" \
+  && echo "|            md5sums FILE            |" \
+  && echo "--------------------------------------" \
+  && echo \
+  && ar -p *.deb control.tar.xz \
+       | tar xJO ./md5sums \
+  && echo \
+  && echo "--------------------------------------" \
+  && echo "|                DONE                |" \
+  && echo "--------------------------------------" \
+  && echo \
+  && echo \
 ;

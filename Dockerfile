@@ -37,8 +37,14 @@ RUN \
 #
 ###################################
 ###################################
-ARG COMMIT_HASH=e0712f4
-ARG VERSION_STRING=1.85+git-e0712f4
+
+# Non-release example:
+#ARG COMMIT_HASH=e0712f4
+#ARG VERSION_STRING=1.85+git-e0712f4
+
+ARG COMMIT_HASH=v1.86
+ARG VERSION_STRING=1.86+git
+
 ###################################
 ###################################
 

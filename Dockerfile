@@ -74,3 +74,7 @@ RUN \
     PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
     cd $PACKAGE_DIR \
     && debuild -b -uc -us
+
+# Report info
+
+RUN sha256sum *.deb && echo $(stat -c%s *.deb) bytes

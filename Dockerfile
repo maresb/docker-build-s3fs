@@ -32,6 +32,22 @@ RUN \
     && apt-get build-dep -y s3fs \
     && apt-get source s3fs
 
+# Download additional dependencies recommended in Wiki installation notes.
+# (This is for OpenSSL support.)
+RUN \
+    apt-get install -y \
+      build-essential \
+      git \
+      libfuse-dev \
+      libcurl4-openssl-dev \
+      libxml2-dev \
+      mime-support \
+      automake \
+      libtool \
+      pkg-config \
+      libssl-dev \
+;
+
 
 # SET COMMIT HASH HERE!!!
 #
@@ -72,11 +88,17 @@ RUN \
 
 # Build
 
-RUN \
-    PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
-    cd $PACKAGE_DIR \
-    && debuild -b -uc -us
+RUN : \
+    && PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d) \
+    ; cd $PACKAGE_DIR \
+    && sed -i 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/g' debian/control \
+    && sed -i 's/--with-gnutls/--with-openssl/g' debian/rules \
+    && debuild -b -uc -us \
+;
 
 # Report info
 
-RUN sha256sum *.deb && echo $(stat -c%s *.deb) bytes
+RUN : \
+  && sha256sum *.deb \
+  && echo $(stat -c%s *.deb) bytes \
+;

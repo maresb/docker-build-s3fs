@@ -4,7 +4,7 @@
 
 Links:
 
-- [Download the resulting .deb file](https://raw.githubusercontent.com/maresb/docker-build-s3fs/deb-v1.86/s3fs_1.86+git_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)
+- **[Download the resulting .deb file](https://raw.githubusercontent.com/maresb/docker-build-s3fs/deb-v1.86/s3fs_1.86+git_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
 
 - GitHub: https://github.com/maresb/docker-build-s3fs
 
@@ -25,18 +25,34 @@ If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can do
 
 Once you have the `.deb` file, run `sudo dpkg -i s3fs_….deb` to install.
 
-### Compile under Docker.
+### 1. Compile under Docker.
+
+Complete either a) or b) below.
+
+**a) Either compile locally**
+    
+Download `Dockerfile` and change to the corresponding directory.
+
+To render an untagged commit,
 ```
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg PACKAGE_VERSION_STRING=1.85+git-e0712f4 .
 ```
 
-Or, for a release version,
+or for a tagged commit such as a release version,
 
 ```
 docker build -t build-s3fs --build-arg COMMIT_ID=v1.86 --build-arg PACKAGE_VERSION_STRING=1.86+git .
 ```
+**b) Or grab a premade image from Docker Hub**
 
-### Copy the package from the image via a temporary container.
+Pull the image from Docker Hub and retag:
+```
+docker pull maresb/docker-build-s3fs
+docker image tag maresb/docker-build-s3fs build-s3fs
+docker rmi maresb/docker-build-s3fs
+```
+
+### 2. Copy the package from the image via a temporary container.
 ```
 debfile=$(docker run --rm build-s3fs sh -c "ls *.deb")
 id=$(docker create build-s3fs)
@@ -44,7 +60,7 @@ docker cp $id:$debfile .
 docker rm -v $id 
 ```
 
-### Clean up.
+### 3. Clean up.
 ```
 docker rmi build-s3fs
 docker purge
@@ -80,6 +96,6 @@ docker run --rm -it build-s3fs /bin/bash
 
 # Notes
 
-<a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should not trust me (unless you know me personally).  I originally wanted to provide a certifiable `.deb` built automatically on Docker Hub. The `Dockerfile` prints the checksum<sup><a name="checksumsrc">[2](#checksumdest)</a></sup> of the `.deb`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so unfortunately only I can verify the checksum at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
+<a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should not trust me (unless you know me personally).  I originally wanted to provide a certifiable `.deb` built automatically on Docker Hub. The `Dockerfile` prints the checksum<sup><a name="checksumsrc">[2](#checksumdest)</a></sup> of the `.deb`.  However, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so unfortunately only I can verify the checksum at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
 
 <a name="checksumdest">[[2]](#checksumsrc)</a> There is not even a unique checksum of the resulting `.deb` for a given commit, since the archived files have a last-modified time according to the build time, and since the changelog contains a timestamp of the build time.

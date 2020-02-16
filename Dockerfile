@@ -92,6 +92,14 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 ###################################
 ###################################
 
+
+# For reproducibility, allow a timestamp of the format "YYYY-MM-DD HH:MM:SS" in UTC
+# i.e. the output of:
+#   date -u +"%Y-%m-%d %H:%M:%S"
+
+  ARG BUILD_TIMESTAMP="NONE"
+
+
 # To be increased when there is a change to this Dockerfile which affects the contents
 # of the resulting .deb file.  KEEP THIS SYNCHRONIZED WITH ALL BUILD SCRIPTS!!!
 
@@ -152,6 +160,14 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
       ; cd $PACKAGE_DIR \
       && sed -i 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/g' debian/control \
       && sed -i 's/--with-gnutls/--with-openssl/g' debian/rules \
+      && if [ "${BUILD_TIMESTAMP}" != "NONE" ]; then \
+           if [ $(date -u +%s) -lt $(date -u --date="${BUILD_TIMESTAMP}" +%s) ]; then : \
+             && echo "BUILD_TIMESTAMP cannot be in the future!" \
+             && exit 1; \
+           fi ; : \
+           && sed -i "0,/>  / s/>  .*/>  $(date -u -R --date="${BUILD_TIMESTAMP}")/g" debian/changelog \
+           && find . -exec touch -m -d "${BUILD_TIMESTAMP}" {} +; \
+         fi ; : \
       && debuild -b -uc -us \
   ;
 

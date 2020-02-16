@@ -48,6 +48,7 @@ RUN \
       libssl-dev \
 ;
 
+ARG REBUILD_FROM_HERE=NO
 
 # SET COMMIT HASH HERE!!!
 #

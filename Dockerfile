@@ -54,20 +54,46 @@ RUN \
 #   --build-arg REBUILD_FROM_HERE=$(date +%s)
 ARG REBUILD_FROM_HERE=NO
 
-# SET COMMIT HASH HERE!!!
+# SET COMMIT ID HERE!!!
 #
 ###################################
 ###################################
 
-# Non-release example:
-#ARG COMMIT_ID=e0712f4
-#ARG PACKAGE_VERSION_STRING=1.85+git-e0712f4
-
+# The id (either hash or alias) of the default commit to build:
+#
 ARG COMMIT_ID=v1.86
-ARG PACKAGE_VERSION_STRING=1.86+git
+#
+#   Another example:
+#     ARG COMMIT_ID=e0712f4
+
+# The latest release of s3fs from the time of the above commit
+#
+ARG S3FS_VERSION=1.86
+
+# To be increased when there is a change to this Dockerfile which affects the contents
+# of the resulting .deb file.  KEEP THIS SYNCHRONIZED WITH ALL BUILD SCRIPTS!!!
+#
+ARG DEBIAN_PACKAGE_REVISION=2
 
 ###################################
 ###################################
+
+# Build up the version string for the package
+ARG PACKAGE_VERSION_STRING=${S3FS_VERSION}+git-${COMMIT_ID}-${DEBIAN_PACKAGE_REVISION}
+
+# These are variables which should be duplicated in build scripts and passed as arguments. 
+# Do the corresponding consistency checks.
+ARG SCRIPT_DEBIAN_PACKAGE_REVISION=DEBIAN_PACKAGE_REVISION
+ARG SCRIPT_PACKAGE_VERSION_STRING=PACKAGE_VERSION_STRING
+
+# Throw an error if they're inconsistent.
+RUN : \
+ && [ "${SCRIPT_DEBIAN_PACKAGE_REVISION}" = "${DEBIAN_PACKAGE_REVISION}" ] \
+ && [ "${SCRIPT_PACKAGE_VERSION_STRING}"  = "${PACKAGE_VERSION_STRING}"  ] \
+;
+
+
+
 
 # Download the latest GitHub release, overwriting the original source archive. 
 # Then re-extract the original source tree, and update the version.

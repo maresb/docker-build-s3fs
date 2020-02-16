@@ -1,0 +1,364 @@
+Sending build context to Docker daemon  1.935MB
+Step 1/27 : FROM ubuntu:18.04
+ ---> 775349758637
+Step 2/27 : LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>"       name="docker-build-s3fs"       url="https://github.com/maresb/docker-build-s3fs"       vcs-url="https://github.com/maresb/docker-build-s3fs"
+ ---> Using cache
+ ---> df7f92f1a162
+Step 3/27 : COPY 010-install-build-tools.sh /usr/local/bin
+ ---> Using cache
+ ---> 93b36938f92a
+Step 4/27 : RUN 010-install-build-tools.sh
+ ---> Using cache
+ ---> 8d78ce1aa3d5
+Step 5/27 : COPY 020-install-build-dependencies.sh /usr/local/bin
+ ---> Using cache
+ ---> ccde4db585f7
+Step 6/27 : RUN 020-install-build-dependencies.sh
+ ---> Using cache
+ ---> 7c7850344048
+Step 7/27 : COPY 030-install-recommended-dependencies.sh /usr/local/bin
+ ---> Using cache
+ ---> 4feb8bcf77c5
+Step 8/27 : RUN 030-install-recommended-dependencies.sh
+ ---> Using cache
+ ---> d593c3e96364
+Step 9/27 : RUN useradd -m deb
+ ---> Using cache
+ ---> 0a3a8da37194
+Step 10/27 : USER deb
+ ---> Using cache
+ ---> a89af287d3b7
+Step 11/27 : WORKDIR /home/deb
+ ---> Using cache
+ ---> 07d3731ff6d7
+Step 12/27 : COPY 040-create-source-tree.sh /usr/local/bin
+ ---> Using cache
+ ---> ddf80bf892c5
+Step 13/27 : RUN 040-create-source-tree.sh
+ ---> Using cache
+ ---> a7a9e30f1ff1
+Step 14/27 : ARG REBUILD_FROM_HERE=NO
+ ---> Using cache
+ ---> b6453598b284
+Step 15/27 : ARG COMMIT_ID=v1.86
+ ---> Using cache
+ ---> 974108879463
+Step 16/27 : ARG S3FS_VERSION=1.86
+ ---> Using cache
+ ---> bc2a2999cf0d
+Step 17/27 : ARG BUILD_TIMESTAMP="2020-02-16 18:00:00"
+ ---> Using cache
+ ---> fb1479ac410c
+Step 18/27 : ARG DEBIAN_PACKAGE_REVISION=2
+ ---> Using cache
+ ---> 3bc657d73e04
+Step 19/27 : ARG PACKAGE_VERSION_STRING=${S3FS_VERSION}+git-${COMMIT_ID}-${DEBIAN_PACKAGE_REVISION}
+ ---> Using cache
+ ---> 0124add31543
+Step 20/27 : ARG SCRIPT_DEBIAN_PACKAGE_REVISION=${DEBIAN_PACKAGE_REVISION}
+ ---> Using cache
+ ---> cef7264eb663
+Step 21/27 : ARG SCRIPT_PACKAGE_VERSION_STRING=${PACKAGE_VERSION_STRING}
+ ---> Using cache
+ ---> 55085b98e589
+Step 22/27 : COPY 050-update-source-from-git.sh /usr/local/bin
+ ---> Using cache
+ ---> b400b0224706
+Step 23/27 : RUN 050-update-source-from-git.sh
+ ---> Running in d64b631816f6
+[91m+ export 'DEBFULLNAME=Ben Mares'
++ DEBFULLNAME='Ben Mares'
++ export DEBEMAIL=services-docker-build-s3fs@tensorial.com
++ DEBEMAIL=services-docker-build-s3fs@tensorial.com
+[0m[91m+ '[' 2 = 2 ']'
++ '[' 1.86+git-v1.86-2 = 1.86+git-v1.86-2 ']'
+[0m[91m++ ls s3fs-fuse_1.82.orig.tar.gz
+[0m[91m+ PACKAGE_GZ=s3fs-fuse_1.82.orig.tar.gz
+[0m[91m++ ls s3fs-fuse_1.82-1.dsc
+[0m[91m+ PACKAGE_DSC=s3fs-fuse_1.82-1.dsc
+[0m[91m++ find . -maxdepth 1 -name 's3fs-fuse-*' -type d
+[0m[91m+ PACKAGE_DIR=./s3fs-fuse-1.82
+[0m[91m+ curl --silent --location https://github.com/s3fs-fuse/s3fs-fuse/tarball/v1.86 --output s3fs-fuse_1.82.orig.tar.gz
+[0m[91m+ rm -rf ./s3fs-fuse-1.82
+[0m[91m+ dpkg-source --no-check -x s3fs-fuse_1.82-1.dsc
+[0mdpkg-source: info: extracting s3fs-fuse in s3fs-fuse-1.82
+dpkg-source: info: unpacking s3fs-fuse_1.82.orig.tar.gz
+dpkg-source: info: unpacking s3fs-fuse_1.82-1.debian.tar.xz
+[91m+ cd ./s3fs-fuse-1.82
+[0m[91m+ echo v1.86
+[0m[91m+ dch -v 1.86+git-v1.86-2 'Made by docker-build-s3fs from GitHub using commit v1.86'
+[0m[91mdch warning: your current directory has been renamed to:
+../s3fs-fuse-1.86+git-v1.86
+[0m[91mdch warning: no orig tarball found for the new version.
+[0mRemoving intermediate container d64b631816f6
+ ---> 3f95ed14cc80
+Step 24/27 : COPY 060-build-package.sh /usr/local/bin
+ ---> 6fb7e343e806
+Step 25/27 : RUN 060-build-package.sh
+ ---> Running in 36800d7fc576
+[91m++ find . -maxdepth 1 -name 's3fs-fuse-*' -type d
+[0m[91m+ PACKAGE_DIR=./s3fs-fuse-1.86+git-v1.86
++ cd ./s3fs-fuse-1.86+git-v1.86
+[0m[91m+ sed -i s/libcurl4-gnutls-dev/libcurl4-openssl-dev/g debian/control
+[0m[91m+ sed -i s/--with-gnutls/--with-openssl/g debian/rules
+[0m[91m+ '[' '2020-02-16 18:00:00' '!=' NONE ']'
+[0m[91m++ date -u +%s
+[0m[91m++ date -u '--date=2020-02-16 18:00:00' +%s
+[0m[91m+ '[' 1581892700 -lt 1581876000 ']'
+[0m[91m++ date -u -R '--date=2020-02-16 18:00:00'
+[0m[91m+ sed -i '0,/>  / s/>  .*/>  Sun, 16 Feb 2020 18:00:00 +0000/g' debian/changelog
+[0m[91m+ find . -exec touch -m -d '2020-02-16 18:00:00' '{}' +
+[0m[91m+ debuild -b -uc -us
+[0m dpkg-buildpackage -rfakeroot -us -uc -ui -b
+dpkg-buildpackage: info: source package s3fs-fuse
+dpkg-buildpackage: info: source version 1.86+git-v1.86-2
+dpkg-buildpackage: info: source distribution UNRELEASED
+dpkg-buildpackage: info: source changed by Ben Mares <services-docker-build-s3fs@tensorial.com>
+ dpkg-source --before-build s3fs-fuse-1.86+git-v1.86
+dpkg-buildpackage: info: host architecture amd64
+ fakeroot debian/rules clean
+dh clean
+   dh_clean
+ debian/rules build
+dh build
+   dh_update_autotools_config
+   dh_autoreconf
+configure.ac:30: installing './compile'
+configure.ac:26: installing './config.guess'
+configure.ac:26: installing './config.sub'
+configure.ac:27: installing './install-sh'
+configure.ac:27: installing './missing'
+src/Makefile.am: installing './depcomp'
+parallel-tests: installing './test-driver'
+   debian/rules override_dh_auto_configure
+make[1]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86'
+dh_auto_configure -- --with-openssl
+	./configure --build=x86_64-linux-gnu --prefix=/usr --includedir=\${prefix}/include --mandir=\${prefix}/share/man --infodir=\${prefix}/share/info --sysconfdir=/etc --localstatedir=/var --disable-silent-rules --libdir=\${prefix}/lib/x86_64-linux-gnu --libexecdir=\${prefix}/lib/x86_64-linux-gnu --disable-maintainer-mode --disable-dependency-tracking --with-openssl
+configure: WARNING: unrecognized options: --disable-maintainer-mode
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /bin/mkdir -p
+checking for gawk... no
+checking for mawk... mawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking for g++... g++
+checking whether the C++ compiler works... yes
+checking for C++ compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for style of include used by make... GNU
+checking dependency style of g++... none
+checking for gcc... gcc
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking whether gcc understands -c and -o together... yes
+checking dependency style of gcc... none
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking sys/xattr.h usability... yes
+checking sys/xattr.h presence... yes
+checking for sys/xattr.h... yes
+checking attr/xattr.h usability... no
+checking attr/xattr.h presence... no
+checking for attr/xattr.h... no
+checking sys/extattr.h usability... no
+checking sys/extattr.h presence... no
+checking for sys/extattr.h... no
+checking s3fs build with nettle(GnuTLS)... no
+checking s3fs build with OpenSSL... yes
+checking s3fs build with GnuTLS... no
+checking s3fs build with NSS... no
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking for common_lib_checking... yes
+checking compile s3fs with... OpenSSL
+checking for DEPS... yes
+checking for malloc_trim... yes
+checking for library containing clock_gettime... none required
+checking for clock_gettime... yes
+checking pthread mutex recursive... PTHREAD_MUTEX_RECURSIVE
+checking checking CURLOPT_TCP_KEEPALIVE... yes
+checking checking CURLOPT_SSL_ENABLE_ALPN... yes
+checking checking CURLOPT_KEEP_SENDING_ON_ERROR... yes
+checking for git... yes
+checking github short commit hash... v1.86
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating src/Makefile
+config.status: creating test/Makefile
+config.status: creating doc/Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+configure: WARNING: unrecognized options: --disable-maintainer-mode
+make[1]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86'
+   dh_auto_build
+	make -j8 -O
+make  all-recursive
+Making all in src
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o common_auth.o common_auth.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o openssl_auth.o openssl_auth.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o addhead.o addhead.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o string_util.o string_util.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o test_string_util.o test_string_util.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2  -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -o test_string_util string_util.o test_string_util.o  
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o cache.o cache.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o s3fs_util.o s3fs_util.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o fdcache.o fdcache.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o curl.o curl.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++ -DHAVE_CONFIG_H -I. -I..  -D_FILE_OFFSET_BITS=64 -I/usr/include/fuse -I/usr/include/x86_64-linux-gnu -I/usr/include/libxml2  -Wdate-time -D_FORTIFY_SOURCE=2  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2 -c -o s3fs.o s3fs.cpp
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+g++  -g -O2 -fdebug-prefix-map=/home/deb/s3fs-fuse-1.86+git-v1.86=. -fstack-protector-strong -Wformat -Werror=format-security -Wall -D_FILE_OFFSET_BITS=64 -D_FORTIFY_SOURCE=2  -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -o s3fs s3fs.o curl.o cache.o string_util.o s3fs_util.o fdcache.o common_auth.o addhead.o openssl_auth.o   -lfuse -pthread -lcurl -lxml2 -lcrypto 
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+Making all in test
+make[3]: Nothing to be done for 'all'.
+Making all in doc
+make[3]: Nothing to be done for 'all'.
+   debian/rules override_dh_auto_test
+make[1]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86'
+Tests disabled as they require credentals in /home/deb/.passwd-s3fs.
+make[1]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86'
+   create-stamp debian/debhelper-build-stamp
+ fakeroot debian/rules binary
+dh binary
+   dh_testroot
+   dh_prep
+   dh_auto_install
+	make -j8 -O install DESTDIR=/home/deb/s3fs-fuse-1.86\+git-v1.86/debian/s3fs AM_UPDATE_INFO_DIR=no
+Making install in src
+make[3]: Nothing to be done for 'install-data-am'.
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+ /bin/mkdir -p '/home/deb/s3fs-fuse-1.86+git-v1.86/debian/s3fs/usr/bin'
+  /usr/bin/install -c s3fs '/home/deb/s3fs-fuse-1.86+git-v1.86/debian/s3fs/usr/bin'
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/src'
+Making install in test
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+Making install in doc
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Entering directory '/home/deb/s3fs-fuse-1.86+git-v1.86/doc'
+ /bin/mkdir -p '/home/deb/s3fs-fuse-1.86+git-v1.86/debian/s3fs/usr/share/man/man1'
+ /usr/bin/install -c -m 644 man/s3fs.1 '/home/deb/s3fs-fuse-1.86+git-v1.86/debian/s3fs/usr/share/man/man1'
+make[3]: Leaving directory '/home/deb/s3fs-fuse-1.86+git-v1.86/doc'
+make[3]: Nothing to be done for 'install-exec-am'.
+make[3]: Nothing to be done for 'install-data-am'.
+   dh_installdocs
+   dh_installchangelogs
+   dh_installexamples
+   dh_installman
+   dh_perl
+   dh_link
+   dh_strip_nondeterminism
+   dh_compress
+   dh_fixperms
+   dh_missing
+   dh_strip
+   dh_makeshlibs
+   dh_shlibdeps
+   dh_installdeb
+   dh_gencontrol
+   dh_md5sums
+   dh_builddeb
+dpkg-deb: building package 's3fs' in '../s3fs_1.86+git-v1.86-2_amd64.deb'.
+dpkg-deb: building package 's3fs-dbgsym' in 'debian/.debhelper/scratch-space/build-s3fs/s3fs-dbgsym_1.86+git-v1.86-2_amd64.deb'.
+	Renaming s3fs-dbgsym_1.86+git-v1.86-2_amd64.deb to s3fs-dbgsym_1.86+git-v1.86-2_amd64.ddeb
+ dpkg-genbuildinfo --build=binary
+ dpkg-genchanges --build=binary >../s3fs-fuse_1.86+git-v1.86-2_amd64.changes
+dpkg-genchanges: info: binary-only upload (no source code included)
+ dpkg-source --after-build s3fs-fuse-1.86+git-v1.86
+dpkg-buildpackage: info: binary-only upload (no source included)
+Now running lintian s3fs-fuse_1.86+git-v1.86-2_amd64.changes ...
+E: s3fs: possible-gpl-code-linked-with-openssl
+Finished running lintian.
+Removing intermediate container 36800d7fc576
+ ---> ac4ebbbcd273
+Step 26/27 : COPY 070-print-checksums.sh /usr/local/bin
+ ---> 1b652938bad5
+Step 27/27 : RUN 070-print-checksums.sh
+ ---> Running in 40b399350079
+
+
+md5sums FILE CONTENTS
+------------------------------------------------------------
+
+fd58e267ebf1356c51944e25077585a0  usr/bin/s3fs
+2b3c4daeb209a56f0eca76e446747dfd  usr/share/doc/s3fs/changelog.Debian.gz
+77f9561b63b1d6d232ecddbc2f3aeb28  usr/share/doc/s3fs/copyright
+7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
+17656b1dfe362471065acff564abc0c0  usr/share/man/man1/s3fs.1.gz
+
+
+`s3fs_1.86+git-v1.86-2_amd64.deb` CHECKSUM AND SIZE
+------------------------------------------------------------
+
+    $ md5sum s3fs_1.86+git-v1.86-2_amd64.deb
+    7a3cf63bc18437926a1b686dfacf9c83  s3fs_1.86+git-v1.86-2_amd64.deb
+    
+    $ sha256sum s3fs_1.86+git-v1.86-2_amd64.deb
+    3291d3ee880b29848516d93d76d080fed5e8c5f471d8527e181964577a50dd80  s3fs_1.86+git-v1.86-2_amd64.deb
+    
+    $ b2sum s3fs_1.86+git-v1.86-2_amd64.deb
+    18f49400731e708ec8fff3170f0eeeef7bedc00995337f93f3575ba0773847d061215c47bf1d05fd6591928584172a8b49cee22a306b1ced7eff744c75a759ae  s3fs_1.86+git-v1.86-2_amd64.deb
+
+
+`s3fs` CHECKSUM AND SIZE
+------------------------------------------------------------
+
+    $ md5sum s3fs
+    fd58e267ebf1356c51944e25077585a0  s3fs
+    
+    $ sha256sum s3fs
+    7fa01b0c85bbfb86d392fd979c527f7443eb31ad0c55a0ac6b00d059c456bc7b  s3fs
+    
+    $ b2sum s3fs
+    39ca9f034e3c7dbd6a38e9b5a04a4ca7176a825305ac5cb55d2346005a8bc6eac2ab3676e04aaab580f95cc289a6b45728a9e0200dd4f0aefde6e8921d4575b8  s3fs
+
+
+DONE
+------------------------------------------------------------
+
+Removing intermediate container 40b399350079
+ ---> dfe24dd81d84
+Successfully built dfe24dd81d84
+Successfully tagged build-s3fs:latest

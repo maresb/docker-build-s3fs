@@ -73,26 +73,18 @@ docker run --rm -it build-s3fs /bin/bash
 
 # Checksums
 
-- v1.86
-  - md5sums
-      ```
-      fd58e267ebf1356c51944e25077585a0  usr/bin/s3fs
-      2b3c4daeb209a56f0eca76e446747dfd  usr/share/doc/s3fs/changelog.Debian.gz
-      77f9561b63b1d6d232ecddbc2f3aeb28  usr/share/doc/s3fs/copyright
-      7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
-      17656b1dfe362471065acff564abc0c0  usr/share/man/man1/s3fs.1.gz
-      ```
-  - /usr/bin/s3fs
-      ```
-      $ md5sum /usr/bin/s3fs
-      fd58e267ebf1356c51944e25077585a0  /usr/bin/s3fs
-      
-      $ sha256sum /usr/bin/s3fs
-      7fa01b0c85bbfb86d392fd979c527f7443eb31ad0c55a0ac6b00d059c456bc7b  /usr/bin/s3fs
-      
-      $ b2sum /usr/bin/s3fs
-       39ca9f034e3c7dbd6a38e9b5a04a4ca7176a825305ac5cb55d2346005a8bc6eac2ab3676e04aaab580f95cc289a6b45728a9e0200dd4f0aefde6e8921d4575b8  /usr/bin/s3fs
-      ```
+`s3fs_1.86+git-v1.86-2_amd64.deb` CHECKSUM AND SIZE
+------------------------------------------------------------
+
+    $ md5sum s3fs_1.86+git-v1.86-2_amd64.deb
+    7a3cf63bc18437926a1b686dfacf9c83  s3fs_1.86+git-v1.86-2_amd64.deb
+    
+    $ sha256sum s3fs_1.86+git-v1.86-2_amd64.deb
+    3291d3ee880b29848516d93d76d080fed5e8c5f471d8527e181964577a50dd80  s3fs_1.86+git-v1.86-2_amd64.deb
+    
+    $ b2sum s3fs_1.86+git-v1.86-2_amd64.deb
+    18f49400731e708ec8fff3170f0eeeef7bedc00995337f93f3575ba0773847d061215c47bf1d05fd6591928584172a8b49cee22a306b1ced7eff744c75a759ae  s3fs_1.86+git-v1.86-2_amd64.deb
+
 
 # Notes
 

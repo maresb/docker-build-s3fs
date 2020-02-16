@@ -12,15 +12,16 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 
 # Install general build tools
 
-RUN \
-    apt-get update \
+  RUN : \
+    && apt-get update \
     && apt-get install -y \
         build-essential \
         fakeroot \
         dpkg-dev \
         devscripts \
         git \
-        curl
+        curl \
+;
 
 # Enable source repositories, download package-specific build dependencies,
 # and create source tree.
@@ -78,17 +79,22 @@ RUN \
     PACKAGE_DSC=$(ls *.dsc); \
     # Directory name, i.e. ./s3fs-fuse-1.82
     PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
-    curl -L \
+    curl \
+      --silent \
+      --location \
              https://github.com/s3fs-fuse/s3fs-fuse/tarball/$COMMIT_ID \
-         -o \
+      --output \
              $PACKAGE_GZ \
     && rm -rf "$PACKAGE_DIR" \
     && dpkg-source --no-check -x $PACKAGE_DSC \
     && cd "$PACKAGE_DIR" \
     && export DEBFULLNAME="Ben Mares" \
     && export DEBEMAIL="services-docker-build-s3fs@tensorial.com" \
-    && echo "$COMMIT_ID" > default_commit_hash \
-    && dch -v "$PACKAGE_VERSION_STRING" "Made by docker-build-s3fs from GitHub release"
+    # Place commit id into file recognized by 'configure.ac'.
+    # Otherwise, 's3fs --version' will have an unknown commit because
+    # because we are using a source tarball instead of a git-clone.
+      && echo "$COMMIT_ID" > default_commit_hash \
+    && dch -v "$PACKAGE_VERSION_STRING" "Made by docker-build-s3fs from GitHub using commit ${COMMIT_ID}"
 
 
 # Build

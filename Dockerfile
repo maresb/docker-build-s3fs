@@ -48,6 +48,9 @@ RUN \
       libssl-dev \
 ;
 
+# Add a mechanism to have Docker abandon the cache at this point, by
+# calling docker with the arguments
+#   --build-arg REBUILD_FROM_HERE=$(date +%s)
 ARG REBUILD_FROM_HERE=NO
 
 # SET COMMIT HASH HERE!!!

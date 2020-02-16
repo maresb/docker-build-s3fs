@@ -105,8 +105,8 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 # These are variables which should be duplicated in build scripts and passed as arguments. 
 # Do the corresponding consistency checks.
 
-  ARG SCRIPT_DEBIAN_PACKAGE_REVISION=DEBIAN_PACKAGE_REVISION
-  ARG SCRIPT_PACKAGE_VERSION_STRING=PACKAGE_VERSION_STRING
+  ARG SCRIPT_DEBIAN_PACKAGE_REVISION=${DEBIAN_PACKAGE_REVISION}
+  ARG SCRIPT_PACKAGE_VERSION_STRING=${PACKAGE_VERSION_STRING}
 
 # Throw an error if they're inconsistent.
   RUN : \

@@ -97,7 +97,7 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 # i.e. the output of:
 #   date -u +"%Y-%m-%d %H:%M:%S"
 
-  ARG BUILD_TIMESTAMP="NONE"
+  ARG BUILD_TIMESTAMP="2020-02-16 18:00:00"
 
 
 # To be increased when there is a change to this Dockerfile which affects the contents

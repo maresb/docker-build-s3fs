@@ -87,6 +87,7 @@ RUN \
     && cd "$PACKAGE_DIR" \
     && export DEBFULLNAME="Ben Mares" \
     && export DEBEMAIL="services-docker-build-s3fs@tensorial.com" \
+    && echo "$COMMIT_ID" > default_commit_hash \
     && dch -v "$PACKAGE_VERSION_STRING" "Made by docker-build-s3fs from GitHub release"
 
 

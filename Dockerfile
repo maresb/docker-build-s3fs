@@ -120,6 +120,21 @@ RUN : \
        | tar xJO ./md5sums \
   && echo \
   && echo "--------------------------------------" \
+  && echo "|       s3fs CHECKSUM AND SIZE       |" \
+  && echo "--------------------------------------" \
+  && echo \
+  && ar -p *.deb data.tar.xz | tar xJ ./usr/bin/s3fs \
+  && echo "$ md5sum /usr/bin/s3fs" \
+  && echo "$(md5sum /usr/bin/s3fs)" \
+  && echo \
+  && echo "$ sha256sum /usr/bin/s3fs" \
+  && echo "$(sha256sum /usr/bin/s3fs)" \
+  && echo \
+  && echo "$ b2sum /usr/bin/s3fs" \
+  && echo "$(b2sum /usr/bin/s3fs)" \
+  && rm /usr/bin/s3fs \
+  && echo \
+  && echo "--------------------------------------" \
   && echo "|                DONE                |" \
   && echo "--------------------------------------" \
   && echo \

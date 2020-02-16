@@ -23,15 +23,16 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
         curl \
 ;
 
-# Enable source repositories, download package-specific build dependencies,
-# and create source tree.
+
+# Enable source repositories, download package-specific build dependencies.
 
   RUN : \
     && sed -e '/^#\sdeb-src /s/^# *//;t;d' "/etc/apt/sources.list" \
         | tee /etc/apt/sources.list.d/source-repos-tmp.list > /dev/null \
     && apt-get update \
     && apt-get build-dep -y s3fs \
-    && apt-get source s3fs
+  ;
+
 
 # Download additional dependencies recommended in Wiki installation notes.
 # (This is for OpenSSL support.)
@@ -51,11 +52,20 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
         libssl-dev \
   ;
 
+
 # Make user named 'deb'
 
   RUN useradd -m deb
   USER deb
   WORKDIR /home/deb
+
+# Create source tree.
+
+  RUN : \
+    # This doesn't work since we're not root.
+      #  && apt-get update \
+    && apt-get source s3fs \
+  ;
 
 # Add a mechanism to have Docker abandon the cache at this point, by
 # calling docker with the arguments
@@ -170,14 +180,16 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
     && echo \
     && ar -p *.deb data.tar.xz | tar xJ ./usr/bin/s3fs \
     && echo "$ md5sum /usr/bin/s3fs" \
-    && echo "$(md5sum /usr/bin/s3fs)" \
+    && echo "$(md5sum usr/bin/s3fs)" \
     && echo \
     && echo "$ sha256sum /usr/bin/s3fs" \
-    && echo "$(sha256sum /usr/bin/s3fs)" \
+    && echo "$(sha256sum usr/bin/s3fs)" \
     && echo \
     && echo "$ b2sum /usr/bin/s3fs" \
-    && echo "$(b2sum /usr/bin/s3fs)" \
-    && rm /usr/bin/s3fs \
+    && echo "$(b2sum usr/bin/s3fs)" \
+    && rm usr/bin/s3fs \
+    && rmdir usr/bin \
+    && rmdir usr \
     && echo \
     && echo "--------------------------------------" \
     && echo "|                DONE                |" \

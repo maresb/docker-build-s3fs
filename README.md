@@ -2,9 +2,11 @@
 
 #### Builds a .deb for Ubuntu 18.04 based on a specified commit from the s3fs-fuse GitHub repository.
 
-Links:
+## Download
 
-- **[Download the resulting .deb file](https://raw.githubusercontent.com/maresb/docker-build-s3fs/deb-v1.86/s3fs_1.86+git_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
+**[Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86%2Bgit-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
+
+## Links
 
 - GitHub: https://github.com/maresb/docker-build-s3fs
 
@@ -12,7 +14,7 @@ Links:
 
 - s3fs-fuse: https://github.com/s3fs-fuse/s3fs-fuse
 
-This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with source code updated from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).
+This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).
 
 ## Build s3fs from Docker
 

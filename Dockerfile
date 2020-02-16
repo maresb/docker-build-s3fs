@@ -12,45 +12,21 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 
 # Install general build tools
 
-  RUN : \
-    && apt-get update \
-    && apt-get install -y \
-        build-essential \
-        fakeroot \
-        dpkg-dev \
-        devscripts \
-        git \
-        curl \
-;
+  COPY 010-install-build-tools.sh /usr/local/bin
+  RUN 010-install-build-tools.sh
 
 
 # Enable source repositories, download package-specific build dependencies.
 
-  RUN : \
-    && sed -e '/^#\sdeb-src /s/^# *//;t;d' "/etc/apt/sources.list" \
-        | tee /etc/apt/sources.list.d/source-repos-tmp.list > /dev/null \
-    && apt-get update \
-    && apt-get build-dep -y s3fs \
-  ;
+  COPY 020-install-build-dependencies.sh /usr/local/bin
+  RUN 020-install-build-dependencies.sh
 
 
 # Download additional dependencies recommended in Wiki installation notes.
 # (This is for OpenSSL support.)
 
-  RUN : \
-    && apt-get update \
-    && apt-get install -y \
-        build-essential \
-        git \
-        libfuse-dev \
-        libcurl4-openssl-dev \
-        libxml2-dev \
-        mime-support \
-        automake \
-        libtool \
-        pkg-config \
-        libssl-dev \
-  ;
+  COPY 030-install-recommended-dependencies.sh /usr/local/bin
+  RUN 030-install-recommended-dependencies.sh
 
 
 # Make user named 'deb'
@@ -61,17 +37,16 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 
 # Create source tree.
 
-  RUN : \
-    # This doesn't work since we're not root.
-      #  && apt-get update \
-    && apt-get source s3fs \
-  ;
+  COPY 040-create-source-tree.sh /usr/local/bin
+  RUN 040-create-source-tree.sh
+
 
 # Add a mechanism to have Docker abandon the cache at this point, by
-# calling docker with the arguments
+# calling docker with the extra arguments
 #   --build-arg REBUILD_FROM_HERE=$(date +%s)
 
   ARG REBUILD_FROM_HERE=NO
+
 
 # SET COMMIT ID HERE!!!
 # (Also, update S3FS_VERSION accordingly)
@@ -111,105 +86,27 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
   ARG PACKAGE_VERSION_STRING=${S3FS_VERSION}+git-${COMMIT_ID}-${DEBIAN_PACKAGE_REVISION}
 
 # These are variables which should be duplicated in build scripts and passed as arguments. 
-# Do the corresponding consistency checks.
+# Do the corresponding consistency checks in the next script.
 
   ARG SCRIPT_DEBIAN_PACKAGE_REVISION=${DEBIAN_PACKAGE_REVISION}
   ARG SCRIPT_PACKAGE_VERSION_STRING=${PACKAGE_VERSION_STRING}
 
-# Throw an error if they're inconsistent.
-  RUN : \
-    && [ "${SCRIPT_DEBIAN_PACKAGE_REVISION}" = "${DEBIAN_PACKAGE_REVISION}" ] \
-    && [ "${SCRIPT_PACKAGE_VERSION_STRING}"  = "${PACKAGE_VERSION_STRING}"  ] \
-  ;
 
-
-
-
+# Verify consistency of any given build script parameters.
 # Download the latest GitHub release, overwriting the original source archive. 
 # Then re-extract the original source tree, and update the version.
 
-  RUN \
-    # Base name of the package, i.e. s3fs-fuse_1.82-1
-    PACKAGE_GZ=$(ls *.orig.tar.gz); \
-    # Base name of the package, i.e. s3fs-fuse_1.82-1
-    PACKAGE_DSC=$(ls *.dsc); \
-    # Directory name, i.e. ./s3fs-fuse-1.82
-    PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d); \
-    curl \
-      --silent \
-      --location \
-           https://github.com/s3fs-fuse/s3fs-fuse/tarball/$COMMIT_ID \
-      --output \
-           $PACKAGE_GZ \
-    && rm -rf "$PACKAGE_DIR" \
-    && dpkg-source --no-check -x $PACKAGE_DSC \
-    && cd "$PACKAGE_DIR" \
-    && export DEBFULLNAME="Ben Mares" \
-    && export DEBEMAIL="services-docker-build-s3fs@tensorial.com" \
-    # Place commit id into file recognized by 'configure.ac'.
-    # Otherwise, 's3fs --version' will have an unknown commit because
-    # because we are using a source tarball instead of a git-clone.
-      && echo "$COMMIT_ID" > default_commit_hash \
-    && dch -v "$PACKAGE_VERSION_STRING" "Made by docker-build-s3fs from GitHub using commit ${COMMIT_ID}" \
-  ;
+  COPY 050-update-source-from-git.sh /usr/local/bin
+  RUN 050-update-source-from-git.sh
+
 
 # Build
 
-  RUN : \
-      && PACKAGE_DIR=$(find . -maxdepth 1 -name "s3fs-fuse-*" -type d) \
-      ; cd $PACKAGE_DIR \
-      && sed -i 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/g' debian/control \
-      && sed -i 's/--with-gnutls/--with-openssl/g' debian/rules \
-      && if [ "${BUILD_TIMESTAMP}" != "NONE" ]; then \
-           if [ $(date -u +%s) -lt $(date -u --date="${BUILD_TIMESTAMP}" +%s) ]; then : \
-             && echo "BUILD_TIMESTAMP cannot be in the future!" \
-             && exit 1; \
-           fi ; : \
-           && sed -i "0,/>  / s/>  .*/>  $(date -u -R --date="${BUILD_TIMESTAMP}")/g" debian/changelog \
-           && find . -exec touch -m -d "${BUILD_TIMESTAMP}" {} +; \
-         fi ; : \
-      && debuild -b -uc -us \
-  ;
+  COPY 060-build-package.sh /usr/local/bin
+  RUN 060-build-package.sh
+
 
 # Report info
 
-  RUN : \
-    && echo \
-    && echo \
-    && echo "--------------------------------------" \
-    && echo "|       .deb CHECKSUM AND SIZE       |" \
-    && echo "--------------------------------------" \
-    && echo \
-    && sha256sum *.deb \
-    && echo $(stat -c%s *.deb) bytes \
-    && echo \
-    && echo "--------------------------------------" \
-    && echo "|            md5sums FILE            |" \
-    && echo "--------------------------------------" \
-    && echo \
-    && ar -p *.deb control.tar.xz \
-         | tar xJO ./md5sums \
-    && echo \
-    && echo "--------------------------------------" \
-    && echo "|       s3fs CHECKSUM AND SIZE       |" \
-    && echo "--------------------------------------" \
-    && echo \
-    && ar -p *.deb data.tar.xz | tar xJ ./usr/bin/s3fs \
-    && echo "$ md5sum /usr/bin/s3fs" \
-    && echo "$(md5sum usr/bin/s3fs)" \
-    && echo \
-    && echo "$ sha256sum /usr/bin/s3fs" \
-    && echo "$(sha256sum usr/bin/s3fs)" \
-    && echo \
-    && echo "$ b2sum /usr/bin/s3fs" \
-    && echo "$(b2sum usr/bin/s3fs)" \
-    && rm usr/bin/s3fs \
-    && rmdir usr/bin \
-    && rmdir usr \
-    && echo \
-    && echo "--------------------------------------" \
-    && echo "|                DONE                |" \
-    && echo "--------------------------------------" \
-    && echo \
-    && echo \
-  ;
+  COPY 070-print-checksums.sh /usr/local/bin
+  RUN 070-print-checksums.sh

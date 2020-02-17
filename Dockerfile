@@ -9,23 +9,25 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
       url="https://github.com/maresb/docker-build-s3fs" \
       vcs-url="https://github.com/maresb/docker-build-s3fs"
 
+ARG SCRIPT_SOURCE_DIR=dockerfile_scripts
+ARG SCRIPT_DEST_DIR=/usr/local/bin
 
 # Install general build tools
 
-  COPY 010-install-build-tools.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/010-install-build-tools.sh ${SCRIPT_DEST_DIR}
   RUN 010-install-build-tools.sh
 
 
 # Enable source repositories, download package-specific build dependencies.
 
-  COPY 020-install-build-dependencies.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/020-install-build-dependencies.sh ${SCRIPT_DEST_DIR}
   RUN 020-install-build-dependencies.sh
 
 
 # Download additional dependencies recommended in Wiki installation notes.
 # (This is for OpenSSL support.)
 
-  COPY 030-install-recommended-dependencies.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/030-install-recommended-dependencies.sh ${SCRIPT_DEST_DIR}
   RUN 030-install-recommended-dependencies.sh
 
 
@@ -37,7 +39,7 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 
 # Create source tree.
 
-  COPY 040-create-source-tree.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/040-create-source-tree.sh ${SCRIPT_DEST_DIR}
   RUN 040-create-source-tree.sh
 
 
@@ -96,17 +98,17 @@ LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
 # Download the latest GitHub release, overwriting the original source archive. 
 # Then re-extract the original source tree, and update the version.
 
-  COPY 050-update-source-from-git.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/050-update-source-from-git.sh ${SCRIPT_DEST_DIR}
   RUN 050-update-source-from-git.sh
 
 
 # Build
 
-  COPY 060-build-package.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/060-build-package.sh ${SCRIPT_DEST_DIR}
   RUN 060-build-package.sh
 
 
 # Report info
 
-  COPY 070-print-checksums.sh /usr/local/bin
+  COPY ${SCRIPT_SOURCE_DIR}/070-print-checksums.sh ${SCRIPT_DEST_DIR}
   RUN 070-print-checksums.sh

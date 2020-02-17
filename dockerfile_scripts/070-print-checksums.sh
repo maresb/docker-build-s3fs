@@ -4,11 +4,16 @@ set -e
 
 echo
 echo
+echo "------------------------------------------------------------"
+echo
+echo
 
 print_size_and_checksums () {
 cat <<EOF
-\`${1}\` CHECKSUM AND SIZE
-------------------------------------------------------------
+### \`${1}\` size and checksum
+
+    $ stat --printf="%s bytes\n" $1
+    $(stat --printf="%s bytes\n" $1)
 
     $ md5sum $1
     $(md5sum $1)
@@ -25,8 +30,7 @@ EOF
 
 
 cat <<EOF
-md5sums FILE CONTENTS
-------------------------------------------------------------
+### md5sums FILE CONTENTS
 
 $(ar -p *.deb control.tar.xz | tar xJO ./md5sums)
 
@@ -41,6 +45,7 @@ rm s3fs
 
 cat <<EOF
 DONE
+
 ------------------------------------------------------------
 
 EOF

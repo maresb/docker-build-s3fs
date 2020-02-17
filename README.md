@@ -2,11 +2,11 @@
 
 #### Builds a .deb for Ubuntu 18.04 based on a specified commit from the s3fs-fuse GitHub repository.
 
-This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).  This is all done at Docker build time.
+This Dockerfile repackages the very old Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).  This is all done at Docker build time.
 
 ## Download
 
-**[Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86+git-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
+### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86+git-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release) and verify [your preferred checksum](#checksums).
 
 ## Links
 
@@ -93,8 +93,16 @@ docker run --rm -it df7f92f1a162 /bin/bash
 
 # Checksums
 
-`s3fs_1.86+git-v1.86-2_amd64.deb` CHECKSUM AND SIZE
-------------------------------------------------------------
+Normally, due to last-modified times of files and the timestamp in the changelog,
+no two `.deb` files are expected to be exactly the same, even if they have the
+exact same content. However, by fixing a build-time, the `.deb` files produced
+by this container are reproducible. Thus I can provide a checksum which can be
+verified from the download, Docker Hub, and/or a build on your own computer.
+
+### `s3fs_1.86+git-v1.86-2_amd64.deb` size and checksum
+
+    $ stat --printf="%s bytes\n" s3fs_1.86+git-v1.86-2_amd64.deb
+    225252 bytes
 
     $ md5sum s3fs_1.86+git-v1.86-2_amd64.deb
     7a3cf63bc18437926a1b686dfacf9c83  s3fs_1.86+git-v1.86-2_amd64.deb
@@ -105,7 +113,8 @@ docker run --rm -it df7f92f1a162 /bin/bash
     $ b2sum s3fs_1.86+git-v1.86-2_amd64.deb
     18f49400731e708ec8fff3170f0eeeef7bedc00995337f93f3575ba0773847d061215c47bf1d05fd6591928584172a8b49cee22a306b1ced7eff744c75a759ae  s3fs_1.86+git-v1.86-2_amd64.deb
 
+Originally I wanted to publish these checksums from Docker Hub.  Indeed, they are pasted directly from the output of my `Dockerfile`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so that's not possible at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
 
 # Notes
 
-<a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should not trust me (unless you know me personally).  It is much better to check my Dockerfile and make sure that there is nothing nefarious.
+<a name="trustmedest">[[1]](#trustmesrc)</a> On principle, you should check my Dockerfile and make sure that I'm not doing anything suspicious.

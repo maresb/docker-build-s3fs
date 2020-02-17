@@ -2,9 +2,11 @@
 
 #### Builds a .deb for Ubuntu 18.04 based on a specified commit from the s3fs-fuse GitHub repository.
 
+This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).  This is all done at Docker build time.
+
 ## Download
 
-**[Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86%2Bgit-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
+**[Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86+git-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release)**
 
 ## Links
 
@@ -14,7 +16,6 @@
 
 - s3fs-fuse: https://github.com/s3fs-fuse/s3fs-fuse
 
-This Dockerfile repackages the Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).
 
 ## Build s3fs from Docker
 
@@ -35,16 +36,23 @@ Complete either a) or b) below.
     
 Download `Dockerfile` and change to the corresponding directory.
 
-To render an untagged commit,
+```
+git clone https://github.com/maresb/docker-build-s3fs.git && cd docker-build-s3fs
+```
+
+To render an untagged commit such as [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/e0712f4),
 ```
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg S3FS_VERSION=1.85 .
 ```
 
-or for a tagged commit such as a release version,
+or for a tagged commit such as a release version, for example [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86),
 
 ```
 docker build -t build-s3fs --build-arg COMMIT_ID=v1.86 --build-arg S3FS_VERSION=1.86 .
 ```
+
+The argument `S3FS_VERSION` should refer to the latest version number as of the commit specified under `COMMIT_ID`.
+
 **b) Or grab a premade image from Docker Hub**
 
 Pull the image from Docker Hub and retag:

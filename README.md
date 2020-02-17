@@ -77,8 +77,18 @@ docker purge
 ```
 
 ### For debugging,
+
+If the image successfully builds, you can look inside with
 ```
 docker run --rm -it build-s3fs /bin/bash
+```
+Otherwise, in the output of a partial build, look for a line with an arrow directly followed by a hash such as
+```
+ ---> df7f92f1a162
+```
+Then you can look inside at the corresponding point with
+```
+docker run --rm -it df7f92f1a162 /bin/bash
 ```
 
 # Checksums

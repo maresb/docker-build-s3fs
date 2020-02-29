@@ -78,9 +78,9 @@ docker purge
 
 ### For debugging,
 
-If the image successfully builds, you can look inside with
+If the image successfully builds, you can tag the build stage and look inside with
 ```
-docker build -t build-s3fs:build --target build .
+docker build -t build-s3fs:build --target build [ADD BUILD ARGS HERE] .
 docker run --rm -it build-s3fs:build /bin/bash
 ```
 Otherwise, in the output of a partial build, look for a line with an arrow directly followed by a hash such as

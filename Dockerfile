@@ -2,7 +2,7 @@
 
 # SET COMMIT ID BELOW!!!
 
-FROM ubuntu:18.04
+FROM ubuntu:18.04 AS build
 
 LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
       name="docker-build-s3fs" \
@@ -112,3 +112,12 @@ ARG SCRIPT_DEST_DIR=/usr/local/bin
 
   COPY ${SCRIPT_SOURCE_DIR}/070-print-checksums.sh ${SCRIPT_DEST_DIR}
   RUN 070-print-checksums.sh
+
+
+# Tar the .deb and copy it into an empty image
+
+  RUN tar -cvf s3fs-debian-package.tar *.deb
+  FROM scratch AS deb-only
+  COPY --from=build /home/deb/s3fs-debian-package.tar ./
+  # Prevents the error "Error response from daemon: No command specified":
+  CMD nothing

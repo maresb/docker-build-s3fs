@@ -64,10 +64,10 @@ docker rmi maresb/docker-build-s3fs
 
 ### 2. Copy the package from the image via a temporary container.
 ```
-debfile=$(docker run --rm build-s3fs sh -c "ls *.deb")
 id=$(docker create build-s3fs)
-docker cp $id:/home/deb/$debfile .
-docker rm -v $id 
+docker cp $id:s3fs-debian-package.tar .
+docker rm -v $id
+tar xvf s3fs-debian-package.tar && rm s3fs-debian-package.tar
 ```
 
 ### 3. Clean up.
@@ -80,7 +80,8 @@ docker purge
 
 If the image successfully builds, you can look inside with
 ```
-docker run --rm -it build-s3fs /bin/bash
+docker build -t build-s3fs:build --target build .
+docker run --rm -it build-s3fs:build /bin/bash
 ```
 Otherwise, in the output of a partial build, look for a line with an arrow directly followed by a hash such as
 ```

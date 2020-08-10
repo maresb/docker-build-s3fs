@@ -6,7 +6,7 @@ This Dockerfile repackages the very old Ubuntu 18.04 bionic `.deb` file (current
 
 ## Download
 
-### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.86+git-v1.86-2_amd64.deb) (rendered from [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86) release) and verify [your preferred checksum](#checksums).
+### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.87+git-v1.87-2_amd64.deb) (rendered from [v1.87](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.87) release) and verify [your preferred checksum](#checksums).
 
 ## Links
 
@@ -45,10 +45,10 @@ To render an untagged commit such as [e0712f4](https://github.com/s3fs-fuse/s3fs
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg S3FS_VERSION=1.85 .
 ```
 
-or for a tagged commit such as a release version, for example [v1.86](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.86),
+or for a tagged commit such as a release version, for example [v1.87](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.87),
 
 ```
-docker build -t build-s3fs --build-arg COMMIT_ID=v1.86 --build-arg S3FS_VERSION=1.86 .
+docker build -t build-s3fs --build-arg COMMIT_ID=v1.87 --build-arg S3FS_VERSION=1.87 .
 ```
 
 The argument `S3FS_VERSION` should refer to the latest version number as of the commit specified under `COMMIT_ID`.
@@ -100,19 +100,35 @@ exact same content. However, by fixing a build-time, the `.deb` files produced
 by this container are reproducible. Thus I can provide a checksum which can be
 verified from the download, Docker Hub, and/or a build on your own computer.
 
-### `s3fs_1.86+git-v1.86-2_amd64.deb` size and checksum
+### `s3fs_1.87+git-v1.87-2_amd64.deb` size and checksum
 
-    $ stat --printf="%s bytes\n" s3fs_1.86+git-v1.86-2_amd64.deb
-    225252 bytes
+    $ stat --printf="%s bytes\n" s3fs_1.87+git-v1.87-2_amd64.deb
+    239628 bytes
 
-    $ md5sum s3fs_1.86+git-v1.86-2_amd64.deb
-    7a3cf63bc18437926a1b686dfacf9c83  s3fs_1.86+git-v1.86-2_amd64.deb
+    $ md5sum s3fs_1.87+git-v1.87-2_amd64.deb
+    68a3dc87490699b730a3b02b6fb80af9  s3fs_1.87+git-v1.87-2_amd64.deb
     
-    $ sha256sum s3fs_1.86+git-v1.86-2_amd64.deb
-    3291d3ee880b29848516d93d76d080fed5e8c5f471d8527e181964577a50dd80  s3fs_1.86+git-v1.86-2_amd64.deb
+    $ sha256sum s3fs_1.87+git-v1.87-2_amd64.deb
+    aeac5a1dbfdbf530d1ab07ca966f53046a79a8319830c1d5a9a5d53447d2588c  s3fs_1.87+git-v1.87-2_amd64.deb
     
-    $ b2sum s3fs_1.86+git-v1.86-2_amd64.deb
-    18f49400731e708ec8fff3170f0eeeef7bedc00995337f93f3575ba0773847d061215c47bf1d05fd6591928584172a8b49cee22a306b1ced7eff744c75a759ae  s3fs_1.86+git-v1.86-2_amd64.deb
+    $ b2sum s3fs_1.87+git-v1.87-2_amd64.deb
+    b4fe476a584e516e2ff35b4aaedc23ac9bc10c0b761820745a1a8ea4656c581a11bb5634b2dff59685744e33408459c7e8e8695d349d8d4e919e6876f7056b7e  s3fs_1.87+git-v1.87-2_amd64.deb
+
+
+### `s3fs` size and checksum
+
+    $ stat --printf="%s bytes\n" s3fs
+    657704 bytes
+
+    $ md5sum s3fs
+    e5e675c6041cb6c7a689877a7df2de61  s3fs
+    
+    $ sha256sum s3fs
+    dc2f8d53f789a36bfb5e4eec430d017a1a5d351412f120253a013fcfc409a034  s3fs
+    
+    $ b2sum s3fs
+    03b9d1362d2fe0fb4532f415e19434885be70cd897878e2039b95bda7398e92753d68559fe777f620c4b366dfb1db7195fd2bd32410f288e1b1d98d72fd35232  s3fs
+
 
 Originally I wanted to publish these checksums from Docker Hub.  Indeed, they are pasted directly from the output of my `Dockerfile`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so that's not possible at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
 

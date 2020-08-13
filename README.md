@@ -26,7 +26,14 @@ convenience of installing from a `.deb` file as opposed to compiling from source
 For security reasons, I avoid downloading software compiled by random people.
 If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can download the `.deb` from the above link.  Otherwise, follow the instructions below to build it yourself.
 
-Once you have the `.deb` file, run `sudo dpkg -i s3fs_….deb` to install.
+## Installation
+
+Once you have the `.deb` file, run 
+
+```bash
+sudo apt-get install -y fuse mime-support libxml2
+sudo dpkg -i s3fs_….deb
+```
 
 ### 1. Compile under Docker.
 
@@ -36,18 +43,18 @@ Complete either a) or b) below.
     
 Download `Dockerfile` and change to the corresponding directory.
 
-```
+```bash
 git clone https://github.com/maresb/docker-build-s3fs.git && cd docker-build-s3fs
 ```
 
 To render an untagged commit such as [e0712f4](https://github.com/s3fs-fuse/s3fs-fuse/tree/e0712f4),
-```
+```bash
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg S3FS_VERSION=1.85 .
 ```
 
 or for a tagged commit such as a release version, for example [v1.87](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.87),
 
-```
+```bash
 docker build -t build-s3fs --build-arg COMMIT_ID=v1.87 --build-arg S3FS_VERSION=1.87 .
 ```
 
@@ -56,14 +63,14 @@ The argument `S3FS_VERSION` should refer to the latest version number as of the 
 **b) Or grab a premade image from Docker Hub**
 
 Pull the image from Docker Hub and retag:
-```
+```bash
 docker pull maresb/docker-build-s3fs
 docker image tag maresb/docker-build-s3fs build-s3fs
 docker rmi maresb/docker-build-s3fs
 ```
 
 ### 2. Copy the package from the image via a temporary container.
-```
+```bash
 id=$(docker create build-s3fs)
 docker cp $id:s3fs-debian-package.tar .
 docker rm -v $id
@@ -71,7 +78,7 @@ tar xvf s3fs-debian-package.tar && rm s3fs-debian-package.tar
 ```
 
 ### 3. Clean up.
-```
+```bash
 docker rmi build-s3fs
 docker purge
 ```
@@ -79,16 +86,16 @@ docker purge
 ### For debugging,
 
 If the image successfully builds, you can tag the build stage and look inside with
-```
+```bash
 docker build -t build-s3fs:build --target build [ADD BUILD ARGS HERE] .
 docker run --rm -it build-s3fs:build /bin/bash
 ```
 Otherwise, in the output of a partial build, look for a line with an arrow directly followed by a hash such as
-```
+```bash
  ---> df7f92f1a162
 ```
 Then you can look inside at the corresponding point with
-```
+```bash
 docker run --rm -it df7f92f1a162 /bin/bash
 ```
 

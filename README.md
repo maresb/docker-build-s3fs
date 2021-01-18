@@ -6,7 +6,7 @@ This Dockerfile repackages the very old Ubuntu 18.04 bionic `.deb` file (current
 
 ## Download
 
-### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.87+git-v1.87-2_amd64.deb) (rendered from [v1.87](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.87) release) and verify [your preferred checksum](#checksums).
+### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.88+git-v1.88-2_amd64.deb) (rendered from [v1.88](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.88) release) and verify [your preferred checksum](#checksums).
 
 ## Links
 
@@ -31,7 +31,7 @@ If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can do
 Once you have the `.deb` file, run 
 
 ```bash
-sudo apt-get install -y fuse mime-support libxml2
+sudo apt-get install -y fuse mime-support libxml2 libcurl4 libssl1.1
 sudo dpkg -i s3fs_….deb
 ```
 
@@ -52,10 +52,10 @@ To render an untagged commit such as [e0712f4](https://github.com/s3fs-fuse/s3fs
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg S3FS_VERSION=1.85 .
 ```
 
-or for a tagged commit such as a release version, for example [v1.87](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.87),
+or for a tagged commit such as a release version, for example [v1.88](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.88),
 
 ```bash
-docker build -t build-s3fs --build-arg COMMIT_ID=v1.87 --build-arg S3FS_VERSION=1.87 .
+docker build -t build-s3fs --build-arg COMMIT_ID=v1.88 --build-arg S3FS_VERSION=1.88 .
 ```
 
 The argument `S3FS_VERSION` should refer to the latest version number as of the commit specified under `COMMIT_ID`.
@@ -80,7 +80,7 @@ tar xvf s3fs-debian-package.tar && rm s3fs-debian-package.tar
 ### 3. Clean up.
 ```bash
 docker rmi build-s3fs
-docker purge
+docker system prune
 ```
 
 ### For debugging,
@@ -107,34 +107,46 @@ exact same content. However, by fixing a build-time, the `.deb` files produced
 by this container are reproducible. Thus I can provide a checksum which can be
 verified from the download, Docker Hub, and/or a build on your own computer.
 
-### `s3fs_1.87+git-v1.87-2_amd64.deb` size and checksum
+NOTE: After some time, discrepancies in the checksums could arise due to updated
+dependencies. To compare, I provide logs under [`builds/`](builds).
 
-    $ stat --printf="%s bytes\n" s3fs_1.87+git-v1.87-2_amd64.deb
-    239628 bytes
+### md5sums FILE CONTENTS
 
-    $ md5sum s3fs_1.87+git-v1.87-2_amd64.deb
-    68a3dc87490699b730a3b02b6fb80af9  s3fs_1.87+git-v1.87-2_amd64.deb
+590abee042233159e306cdfd2fd06024  usr/bin/s3fs
+276163e4449305310fb4d234ac923a2a  usr/share/doc/s3fs/changelog.Debian.gz
+77f9561b63b1d6d232ecddbc2f3aeb28  usr/share/doc/s3fs/copyright
+7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
+f24ecfc73b4b11042a614fc2c079fa9a  usr/share/man/man1/s3fs.1.gz
+
+
+### `s3fs_1.88+git-v1.88-2_amd64.deb` size and checksum
+
+    $ stat --printf="%s bytes\n" s3fs_1.88+git-v1.88-2_amd64.deb
+    260052 bytes
+
+    $ md5sum s3fs_1.88+git-v1.88-2_amd64.deb
+    40f1a38de2c370f5415900d8ad5b2dd3  s3fs_1.88+git-v1.88-2_amd64.deb
     
-    $ sha256sum s3fs_1.87+git-v1.87-2_amd64.deb
-    aeac5a1dbfdbf530d1ab07ca966f53046a79a8319830c1d5a9a5d53447d2588c  s3fs_1.87+git-v1.87-2_amd64.deb
+    $ sha256sum s3fs_1.88+git-v1.88-2_amd64.deb
+    56c3c6c6c5adc367968e5ea11a171a62fc95eae1a250d8dc79d01f63ff9c3ae5  s3fs_1.88+git-v1.88-2_amd64.deb
     
-    $ b2sum s3fs_1.87+git-v1.87-2_amd64.deb
-    b4fe476a584e516e2ff35b4aaedc23ac9bc10c0b761820745a1a8ea4656c581a11bb5634b2dff59685744e33408459c7e8e8695d349d8d4e919e6876f7056b7e  s3fs_1.87+git-v1.87-2_amd64.deb
+    $ b2sum s3fs_1.88+git-v1.88-2_amd64.deb
+    43d6f1f01d4cc0fc6a41dd887195b47a7ee4916c3ba8bfd7119c708f908a9f71d7393b8b60b85d0ccac6fcc3e1aae8bfb6a33dca99b82f34e4621e9fcfa212ad  s3fs_1.88+git-v1.88-2_amd64.deb
 
 
 ### `s3fs` size and checksum
 
     $ stat --printf="%s bytes\n" s3fs
-    657704 bytes
+    739600 bytes
 
     $ md5sum s3fs
-    e5e675c6041cb6c7a689877a7df2de61  s3fs
+    590abee042233159e306cdfd2fd06024  s3fs
     
     $ sha256sum s3fs
-    dc2f8d53f789a36bfb5e4eec430d017a1a5d351412f120253a013fcfc409a034  s3fs
+    2c22289ed1346184db6f010751b715e3dfc4d29345567d93bd7b5ebb7b5a9e43  s3fs
     
     $ b2sum s3fs
-    03b9d1362d2fe0fb4532f415e19434885be70cd897878e2039b95bda7398e92753d68559fe777f620c4b366dfb1db7195fd2bd32410f288e1b1d98d72fd35232  s3fs
+    d049bef27d79ad500cd7217e8f4734bed3b51d9cafe0cee8931f41be2f76a697e92fc6dd1643f016dae6d43aa0ffc427477bf24bddc219faf8ee328349fe61e1  s3fs
 
 
 Originally I wanted to publish these checksums from Docker Hub.  Indeed, they are pasted directly from the output of my `Dockerfile`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so that's not possible at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.

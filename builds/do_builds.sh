@@ -14,6 +14,10 @@ while read line; do
   echo BUILDING: $PACKAGE_VERSION_STRING
   echo
 
+  # Clear any cache
+  docker rmi build-s3fs || true
+  docker system prune --force
+
   docker build -t build-s3fs \
     --build-arg REBUILD_FROM_HERE=$(date +%s) \
     --build-arg COMMIT_ID=${COMMIT_ID} \
@@ -24,9 +28,9 @@ while read line; do
   | tee s3fs_${PACKAGE_VERSION_STRING}_amd64.log \
   ;
 
-  debfile=$(docker run --rm build-s3fs sh -c "ls *.deb")
   id=$(docker create build-s3fs)
-  docker cp $id:/home/deb/$debfile .
+  docker cp $id:s3fs-debian-package.tar .
+  tar xvf s3fs-debian-package.tar && rm s3fs-debian-package.tar
   docker rm -v $id
 
 # Filter comments, trim whitespace, filter blank lines.

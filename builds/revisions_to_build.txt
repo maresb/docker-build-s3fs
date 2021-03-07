@@ -2,7 +2,5 @@
 # Each line consists of a Git commit id followed by the corresponding last s3fs
 # release number.
 
-e0712f4  1.85
-v1.86    1.86
-v1.87    1.87
 v1.88    1.88
+v1.89    1.89

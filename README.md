@@ -1,6 +1,6 @@
 # docker-build-s3fs
 
-#### Builds a .deb for Ubuntu 18.04 based on a specified commit from the s3fs-fuse GitHub repository.
+#### Builds a .deb for Ubuntu 18.04/20.04 based on a specified commit from the s3fs-fuse GitHub repository.
 
 This Dockerfile repackages the very old Ubuntu 18.04 bionic `.deb` file (currently [`s3fs_1.82-1_amd64.deb`](https://packages.ubuntu.com/bionic/amd64/s3fs/download)) with updated source code from the [s3fs-fuse GitHub repository](https://github.com/s3fs-fuse/s3fs-fuse).  This is all done at Docker build time.
 

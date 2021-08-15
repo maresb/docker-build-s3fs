@@ -12,8 +12,6 @@ This Dockerfile repackages the Ubuntu 20.04 focal `.deb` file (currently [`s3fs_
 
 - GitHub: https://github.com/maresb/docker-build-s3fs
 
-- Docker Hub: https://hub.docker.com/repository/docker/maresb/docker-build-s3fs
-
 - s3fs-fuse: https://github.com/s3fs-fuse/s3fs-fuse
 
 
@@ -37,10 +35,6 @@ sudo dpkg -i s3fs_….deb
 
 ### 1. Compile under Docker.
 
-Complete either a) or b) below.
-
-**a) Either compile locally**
-    
 Download `Dockerfile` and change to the corresponding directory.
 
 ```bash
@@ -59,15 +53,6 @@ docker build -t build-s3fs --build-arg COMMIT_ID=v1.90 --build-arg S3FS_VERSION=
 ```
 
 The argument `S3FS_VERSION` should refer to the latest version number as of the commit specified under `COMMIT_ID`.
-
-**b) Or grab a premade image from Docker Hub**
-
-Pull the image from Docker Hub and retag:
-```bash
-docker pull maresb/docker-build-s3fs
-docker image tag maresb/docker-build-s3fs build-s3fs
-docker rmi maresb/docker-build-s3fs
-```
 
 ### 2. Copy the package from the image via a temporary container.
 ```bash
@@ -105,7 +90,7 @@ Normally, due to last-modified times of files and the timestamp in the changelog
 no two `.deb` files are expected to be exactly the same, even if they have the
 exact same content. However, by fixing a build-time, the `.deb` files produced
 by this container are reproducible. Thus I can provide a checksum which can be
-verified from the download, Docker Hub, and/or a build on your own computer.
+verified from the download, and/or a build on your own computer.
 
 NOTE: After some time, discrepancies in the checksums could arise due to updated
 dependencies. To compare, I provide logs under [`builds/`](builds).
@@ -164,7 +149,7 @@ dependencies. To compare, I provide logs under [`builds/`](builds).
     93bcb251a97699303d987a9086870f8cfb6d127e06272050585f67e7ff8ea75a50d45f488c5c836746053331b4af0f82502add4b29bfc7a89836f2ba56d75f4c  s3fs
 
 
-Originally I wanted to publish these checksums from Docker Hub.  Indeed, they are pasted directly from the output of my `Dockerfile`.  Unfortunately, [Docker Hub does not publish logs from automated builds](https://github.com/docker/hub-feedback/issues/1787), so that's not possible at this time.  Please support [this issue](https://github.com/docker/hub-feedback/issues/1787) to improve the trustworthiness of automated Docker Hub builds.
+Originally these files were reproducible by Docker Hub. Unfortunately [Docker Hub Autobuilds have been deactivated](https://www.docker.com/blog/changes-to-docker-hub-autobuilds/), so I can no longer offer this service. I would be interested in autogenerating the checksums/binary through another CI service if someone else puts together a pull request.
 
 # Notes
 

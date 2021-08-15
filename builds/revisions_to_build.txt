@@ -1,6 +1,9 @@
 # This file contains a list of revisions to be built by the do_build.sh script.
-# Each line consists of a Git commit id followed by the corresponding last s3fs
-# release number.
+# Each line consists of the following fields:
 
-v1.88    1.88
-v1.89    1.89
+# * a Git commit id
+# * the corresponding last s3fs release number
+# * build date
+# * build time
+
+v1.90     1.90     2021-08-15 18:00:00

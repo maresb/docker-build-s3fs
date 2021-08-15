@@ -2,12 +2,14 @@
 
 # SET COMMIT ID BELOW!!!
 
-FROM ubuntu:18.04 AS build
+FROM ubuntu:20.04 AS build
 
 LABEL maintainer="Ben Mares <services-docker-build-s3fs@tensorial.com>" \
       name="docker-build-s3fs" \
       url="https://github.com/maresb/docker-build-s3fs" \
       vcs-url="https://github.com/maresb/docker-build-s3fs"
+
+ENV DEBIAN_FRONTEND noninteractive
 
 ARG SCRIPT_SOURCE_DIR=dockerfile_scripts
 ARG SCRIPT_DEST_DIR=/usr/local/bin
@@ -57,30 +59,23 @@ ARG SCRIPT_DEST_DIR=/usr/local/bin
 
 # The id (either hash or alias) of the default commit to build:
 
-  ARG COMMIT_ID=v1.89
+  ARG COMMIT_ID=v1.90
 
 #   Another example:
 #     ARG COMMIT_ID=e0712f4
 
 # The latest release of s3fs from the time of the above commit
 
-  ARG S3FS_VERSION=1.89
+  ARG S3FS_VERSION=1.90
 
 ###################################
 ###################################
-
-
-# For reproducibility, allow a timestamp of the format "YYYY-MM-DD HH:MM:SS" in UTC
-# i.e. the output of:
-#   date -u +"%Y-%m-%d %H:%M:%S"
-
-  ARG BUILD_TIMESTAMP="2020-02-16 18:00:00"
 
 
 # To be increased when there is a change to this Dockerfile which affects the contents
 # of the resulting .deb file.  KEEP THIS SYNCHRONIZED WITH ALL BUILD SCRIPTS!!!
 
-  ARG DEBIAN_PACKAGE_REVISION=2
+  ARG DEBIAN_PACKAGE_REVISION=3
 
 
 # Build up the version string for the package
@@ -103,6 +98,12 @@ ARG SCRIPT_DEST_DIR=/usr/local/bin
 
 
 # Build
+
+# For reproducibility, allow a timestamp of the format "YYYY-MM-DD HH:MM:SS" in UTC
+# i.e. the output of:
+#   date -u +"%Y-%m-%d %H:%M:%S"
+
+  ARG BUILD_TIMESTAMP="2021-08-15 20:00:00"
 
   COPY ${SCRIPT_SOURCE_DIR}/060-build-package.sh ${SCRIPT_DEST_DIR}
   RUN 060-build-package.sh

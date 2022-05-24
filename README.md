@@ -15,7 +15,7 @@ This Dockerfile repackages the Ubuntu 20.04 focal `.deb` file (currently [`s3fs_
 - s3fs-fuse: https://github.com/s3fs-fuse/s3fs-fuse
 
 
-## Build s3fs from Docker
+## Motivation
 
 Ubuntu 18.04's outdated version of [s3fs-fuse](https://github.com/s3fs-fuse/s3fs-fuse) (resulting from `apt-get install s3fs`) did not seem to work for me on AWS. Thus I started this project with a Dockerfile which compiles s3fs from a specified GitHub commit.
 
@@ -23,6 +23,12 @@ I need to deploy this to several instances, so I much prefer the speed and
 convenience of installing from a `.deb` file as opposed to compiling from source.
 For security reasons, I avoid downloading software compiled by random people.
 If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can download the `.deb` from the above link.  Otherwise, follow the instructions below to build it yourself.
+
+I no longer use this project myself. Nowadays my preferred installation method is to use conda-forge, which provides open-source infrastructure for package management. In particular, I use [`mamba`](https://github.com/mamba-org/mamba) to install the [`s3fs-fuse`](https://github.com/conda-forge/s3fs-fuse-feedstock) package with the command
+
+```bash
+mamba install -c conda-forge s3fs-fuse
+```
 
 ## Installation
 
@@ -32,6 +38,10 @@ Once you have the `.deb` file, run
 sudo apt-get install -y fuse mime-support libxml2 libcurl4 libssl1.1
 sudo dpkg -i s3fs_….deb
 ```
+
+## Build s3fs from Docker
+
+If you wish to validate my `.deb` file or to generate it yourself, then follow these steps.
 
 ### 1. Compile under Docker.
 

@@ -107,11 +107,11 @@ dependencies. To compare, I provide logs under [`builds/`](builds).
 
 ### md5sums FILE CONTENTS
 
-0f511a762f22c0c00d75e40515dca142  usr/bin/s3fs
-e225a2dfdaadb1c4c484614df28cdfdf  usr/share/doc/s3fs/changelog.Debian.gz
-2c85defc6568bd463d3dc9c5342faab0  usr/share/doc/s3fs/copyright
-7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
-0b395c729d822fdfd60bcf0d13169c49  usr/share/man/man1/s3fs.1.gz
+    0f511a762f22c0c00d75e40515dca142  usr/bin/s3fs
+    e225a2dfdaadb1c4c484614df28cdfdf  usr/share/doc/s3fs/changelog.Debian.gz
+    2c85defc6568bd463d3dc9c5342faab0  usr/share/doc/s3fs/copyright
+    7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
+    0b395c729d822fdfd60bcf0d13169c49  usr/share/man/man1/s3fs.1.gz
 
 
 ### `s3fs_1.91+git-v1.91-3_amd64.deb` size and checksum

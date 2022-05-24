@@ -6,7 +6,7 @@ This Dockerfile repackages the Ubuntu 20.04 focal `.deb` file (currently [`s3fs_
 
 ## Download
 
-### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.90+git-v1.90-3_amd64.deb) (rendered from [v1.90](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.90) release) and verify [your preferred checksum](#checksums).
+### [Download the resulting .deb file](https://media.githubusercontent.com/media/maresb/docker-build-s3fs/master/builds/s3fs_1.91+git-v1.91-3_amd64.deb) (rendered from [v1.91](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.91) release) and verify [your preferred checksum](#checksums).
 
 ## Links
 
@@ -46,10 +46,10 @@ To render an untagged commit such as [e0712f4](https://github.com/s3fs-fuse/s3fs
 docker build -t build-s3fs --build-arg COMMIT_ID=e0712f4 --build-arg S3FS_VERSION=1.85 .
 ```
 
-or for a tagged commit such as a release version, for example [v1.90](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.90),
+or for a tagged commit such as a release version, for example [v1.91](https://github.com/s3fs-fuse/s3fs-fuse/tree/v1.91),
 
 ```bash
-docker build -t build-s3fs --build-arg COMMIT_ID=v1.90 --build-arg S3FS_VERSION=1.90 .
+docker build -t build-s3fs --build-arg COMMIT_ID=v1.91 --build-arg S3FS_VERSION=1.91 .
 ```
 
 The argument `S3FS_VERSION` should refer to the latest version number as of the commit specified under `COMMIT_ID`.
@@ -97,56 +97,42 @@ dependencies. To compare, I provide logs under [`builds/`](builds).
 
 ### md5sums FILE CONTENTS
 
-4f5959c45a22b076fe29790cfaee461e  usr/bin/s3fs
-6d4bca76dd57f89e9d698e716cf42542  usr/share/doc/s3fs/changelog.Debian.gz
+0f511a762f22c0c00d75e40515dca142  usr/bin/s3fs
+e225a2dfdaadb1c4c484614df28cdfdf  usr/share/doc/s3fs/changelog.Debian.gz
 2c85defc6568bd463d3dc9c5342faab0  usr/share/doc/s3fs/copyright
 7ba8239dcc20cbbbe29a0fcb80cc27ed  usr/share/doc/s3fs/examples/passwd-s3fs
-657c91890ce90f8987638167ecb7e9af  usr/share/man/man1/s3fs.1.gz
+0b395c729d822fdfd60bcf0d13169c49  usr/share/man/man1/s3fs.1.gz
 
 
-### `s3fs_1.90+git-v1.90-3_amd64.deb` size and checksum
+### `s3fs_1.91+git-v1.91-3_amd64.deb` size and checksum
 
-    $ stat --printf="%s bytes\n" s3fs_1.90+git-v1.90-3_amd64.deb
-    287872 bytes
+    $ stat --printf="%s bytes\n" s3fs_1.91+git-v1.91-3_amd64.deb
+    222340 bytes
 
-    $ md5sum s3fs_1.90+git-v1.90-3_amd64.deb
-    b31515c2019eafa037b080dc450ecd6a  s3fs_1.90+git-v1.90-3_amd64.deb
+    $ md5sum s3fs_1.91+git-v1.91-3_amd64.deb
+    95192b8c47c931623eb1ce49282338eb  s3fs_1.91+git-v1.91-3_amd64.deb
     
-    $ sha256sum s3fs_1.90+git-v1.90-3_amd64.deb
-    dbb11d65eb5c58dc0c6a77320710c57e426128c20963823943f58830a7531aa3  s3fs_1.90+git-v1.90-3_amd64.deb
+    $ sha256sum s3fs_1.91+git-v1.91-3_amd64.deb
+    9eca7cb1e9bb08b8e3ae9b476287712a8293493630c76d9102c5ac0058b098c0  s3fs_1.91+git-v1.91-3_amd64.deb
     
-    $ b2sum s3fs_1.90+git-v1.90-3_amd64.deb
-    f6cba9dcad75c1c066d46869bcae0444a36cfbb89afb23455a409df17b7112db5991e8502930bbb584eb58997ca9b80b2f46de4bcbf9b31320f5ae6891fe730d  s3fs_1.90+git-v1.90-3_amd64.deb
+    $ b2sum s3fs_1.91+git-v1.91-3_amd64.deb
+    46befabcd4ffce0000db99d71b1d51d6cef2bab8816fc540bc2e7aaaed921ad545f61d661190b96d219648f69688a7ea65ce6142a6524ec3af5a6f7f9f2ea97f  s3fs_1.91+git-v1.91-3_amd64.deb
 
 
 ### `s3fs` size and checksum
 
     $ stat --printf="%s bytes\n" s3fs
-    829808 bytes
+    604608 bytes
 
     $ md5sum s3fs
-    4f5959c45a22b076fe29790cfaee461e  s3fs
+    0f511a762f22c0c00d75e40515dca142  s3fs
     
     $ sha256sum s3fs
-    7c70e4740071feb4890db432a9a1bec220bd44a51569f7d378bb79c94d296af7  s3fs
+    9f205d172c8e23dcf1fa1f31d999ad469116d032ef5238e29a0d290edd91ec07  s3fs
     
     $ b2sum s3fs
-    1d86df38786d501d84bb2774039a7cdc61c63819409c58fdbfe9cc2baae846a8c87a18f32a800ea31a58a488d0d03ae05fa6f396e5fdd40f2ed9057368e2fc6d  s3fs
+    c9df12b25a3d577f958b5bb1fd15c406c42344b22fd1e172fb2f1672eca1c0b10b0a3487099f9951ebfaf55a3c81e64ce8a9d2cad1275612d15c5ac1713bae92  s3fs
 
-
-### `s3fs` size and checksum
-
-    $ stat --printf="%s bytes\n" s3fs
-    842040 bytes
-
-    $ md5sum s3fs
-    0e6768276f17bb6de2ab0301e0d9ac39  s3fs
-    
-    $ sha256sum s3fs
-    d3969604359364b48ffe89cb6bc088a99988230904020a03d1c6305b4d6415da  s3fs
-    
-    $ b2sum s3fs
-    93bcb251a97699303d987a9086870f8cfb6d127e06272050585f67e7ff8ea75a50d45f488c5c836746053331b4af0f82502add4b29bfc7a89836f2ba56d75f4c  s3fs
 
 
 Originally these files were reproducible by Docker Hub. Unfortunately [Docker Hub Autobuilds have been deactivated](https://www.docker.com/blog/changes-to-docker-hub-autobuilds/), so I can no longer offer this service. I would be interested in autogenerating the checksums/binary through another CI service if someone else puts together a pull request.

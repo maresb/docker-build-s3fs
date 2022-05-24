@@ -59,14 +59,14 @@ ARG SCRIPT_DEST_DIR=/usr/local/bin
 
 # The id (either hash or alias) of the default commit to build:
 
-  ARG COMMIT_ID=v1.90
+  ARG COMMIT_ID=v1.91
 
 #   Another example:
 #     ARG COMMIT_ID=e0712f4
 
 # The latest release of s3fs from the time of the above commit
 
-  ARG S3FS_VERSION=1.90
+  ARG S3FS_VERSION=1.91
 
 ###################################
 ###################################

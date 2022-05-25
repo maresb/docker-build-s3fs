@@ -24,10 +24,27 @@ convenience of installing from a `.deb` file as opposed to compiling from source
 For security reasons, I avoid downloading software compiled by random people.
 If you trust me<sup><a name="trustmesrc">[1](#trustmedest)</a></sup>, you can download the `.deb` from the above link.  Otherwise, follow the instructions below to build it yourself.
 
+## Alternatives
+
 I no longer use this project myself. Nowadays my preferred installation method is to use conda-forge, which provides open-source infrastructure for package management. In particular, I use [`mamba`](https://github.com/mamba-org/mamba) to install the [`s3fs-fuse`](https://github.com/conda-forge/s3fs-fuse-feedstock) package with the command
 
 ```bash
 mamba install -c conda-forge s3fs-fuse
+```
+
+If you don't want to mess with setting up a Conda environment, the following should work on Ubuntu 22.04 (not thoroughly tested):
+
+```bash
+sudo apt-get install -y curl bzip2 fuse mime-support libxml2 libcurl4 libssl3
+curl -Ls https://anaconda.org/conda-forge/s3fs-fuse/1.91/download/linux-64/s3fs-fuse-1.91-h66f7299_0.tar.bz2 | sudo tar -xvj --strip-components=1 --directory=/usr/local/bin bin/s3fs
+```
+
+On Ubuntu 20.04, `libssl3` is not available, but the following procedure should install it from Conda-Forge (not thoroughly tested):
+
+```bash
+DEBIAN_FRONTEND=noninteractive sudo apt-get install -y curl bzip2 fuse mime-support libxml2 libcurl4
+curl -Ls https://anaconda.org/conda-forge/openssl/3.0.3/download/linux-64/openssl-3.0.3-h166bdaf_0.tar.bz2 | sudo tar -xvj --strip-components=1 --directory=/usr/local/lib --wildcards "lib/lib*"
+curl -Ls https://anaconda.org/conda-forge/s3fs-fuse/1.91/download/linux-64/s3fs-fuse-1.91-h66f7299_0.tar.bz2 | sudo tar -xvj --strip-components=1 --directory=/usr/local/bin bin/s3fs
 ```
 
 ## Installation
